@@ -61,9 +61,8 @@ class Balloon(pygame.sprite.Sprite):
 
     def update_pos(self):
         if pygame.mouse.get_focused():
-            self.rect.x, self.rect.y = pygame.mouse.get_pos()
-        else:
-            self.rect.x, self.rect.y = 360, 260
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            self.rect.x, self.rect.y = mouse_x - 35, mouse_y - 40
 
 
 if __name__ == '__main__':
@@ -92,6 +91,7 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     FPS = 420
     
+    pygame.mouse.set_visible(False)
     running = True
     while running:
         screen.fill('lightblue')
@@ -104,9 +104,8 @@ if __name__ == '__main__':
                 for i in range(random.randrange(2)):
                     Cloud(all_sprites)
 
-            # управление шариком
-            pygame.mouse.set_visible(False)
-            balloon.update_pos()
+        # управление шариком
+        balloon.update_pos()    
 
         all_sprites.update()
         all_sprites.draw(screen)
