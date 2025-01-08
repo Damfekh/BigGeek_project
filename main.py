@@ -47,6 +47,20 @@ class Cloud(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += 1
 
+# класс шарика
+class Balloon(pygame.sprite.Sprite):
+    image = load_image('balloon.png')
+
+    def __init__(self, *group):
+        super().__init__(group)
+        self.image = pygame.transform.scale(self.image, (70, 80))
+        self.rect = self.image.get_rect()
+        self.rect.x = 360
+        self.rect.y = 260
+
+    def update_pos(self, pos):
+        self.rect = self.rect.move(pos[0], pos[1])
+
 
 if __name__ == '__main__':
     pygame.init()
@@ -56,18 +70,13 @@ if __name__ == '__main__':
     all_sprites = pygame.sprite.Group()
 
     # отрисовка шарика
-    sprite = pygame.sprite.Sprite(all_sprites)
-    sprite.image = load_image('balloon.png')
-    sprite.image = pygame.transform.scale(sprite.image, (70, 80))
-    sprite.rect = sprite.image.get_rect()
-    sprite.rect.x = 360
-    sprite.rect.y = 260
+    balloon = Balloon(all_sprites)
 
     # отрисовка очков 
     points = 0
     font = pygame.font.Font(None, 26) # выбор шрифт 
     text = font.render(f'points:  {points}', True, (0, 0, 0))
-    
+
     # отрисовка сердец жизни
     for i in range(7):
         Heart(all_sprites)
@@ -77,7 +86,7 @@ if __name__ == '__main__':
     pygame.time.set_timer(CLOUDEVENT, 100)
 
     clock = pygame.time.Clock()
-    FPS = 420
+    FPS = 300
     
     running = True
     while running:
@@ -90,6 +99,12 @@ if __name__ == '__main__':
             if event.type == CLOUDEVENT:
                 for i in range(random.randrange(2)):
                     Cloud(all_sprites)
+
+            # управление шариком
+            if event.type == pygame.MOUSEMOTION and pygame.mouse.get_focused():
+                screen.blit(balloon.image, event.pos)
+                pygame.mouse.set_visible(False)
+                balloon.update_pos(event.pos)
 
         all_sprites.update()
         all_sprites.draw(screen)
