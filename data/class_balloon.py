@@ -1,10 +1,10 @@
 import pygame
-from image_func import load_image
+from data.image_func import load_image
 
 
 # класс шарика
 class Balloon(pygame.sprite.Sprite):
-    image = load_image('balloon.png')
+    image = load_image('img_balloon.png')
 
     def __init__(self, *group):
         super().__init__(group)

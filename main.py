@@ -1,8 +1,8 @@
 import pygame
 import random
-from class_balloon import Balloon
-from class_heart import Heart
-from class_cloud import Cloud
+from data.class_balloon import Balloon
+from data.class_heart import Heart
+from data.class_cloud import Cloud
 
 
 if __name__ == '__main__':

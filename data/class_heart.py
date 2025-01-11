@@ -1,10 +1,10 @@
 import pygame
-from image_func import load_image
+from data.image_func import load_image
 
 
 # класс сердец жизней
 class Heart(pygame.sprite.Sprite):
-    image = load_image('heart.png')
+    image = load_image('img_heart.png')
     image2 = pygame.transform.scale(image, (60, 60))
     x,y = 20,20
 
