@@ -4,6 +4,14 @@ import sys
 
 
 def load_image(name, colorkey=None):
+    """Loads images
+
+        Args:
+            name (str): name of the file
+
+        Returns:
+            pygame.image: image
+    """
     fullname = os.path.join('data', name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
