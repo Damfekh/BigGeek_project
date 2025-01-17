@@ -5,9 +5,17 @@ import random
 
 # класс облаков
 class Cloud(pygame.sprite.Sprite):
+    """
+    The class includes information about the cloud object
+    """
     image = load_image('img_cloud.png')
 
     def __init__(self, *group):
+        """Creating a cloud object and its hitbox
+
+        Args:
+            group (Sprite group): object's sprite group 
+        """
         super().__init__(group)
         self.group = group
         self.w, self.h = random.randint(80, 150), random.randint(70, 80)
@@ -17,4 +25,9 @@ class Cloud(pygame.sprite.Sprite):
         self.rect.y = -70
 
     def update(self):
+        """Changes the position of the cloud
+
+            Returns:
+                None
+        """
         self.rect.y += 1
