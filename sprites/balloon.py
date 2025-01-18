@@ -2,6 +2,7 @@ import pygame
 from data.image_func import load_image
 
 
+
 # класс шарика
 class Balloon(pygame.sprite.Sprite):
     """
@@ -30,3 +31,6 @@ class Balloon(pygame.sprite.Sprite):
         if pygame.mouse.get_focused():
             mouse_x, mouse_y = pygame.mouse.get_pos()
             self.rect.x, self.rect.y = mouse_x - 35, mouse_y - 40
+
+    def get_rect(self):
+        return (self.rect.x, self.rect.y)

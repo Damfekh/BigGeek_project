@@ -31,3 +31,7 @@ class Cloud(pygame.sprite.Sprite):
                 None
         """
         self.rect.y += 1
+
+    def collide_update(self, balloon_pos):
+        if self.rect.collidepoint(balloon_pos):
+            return True
