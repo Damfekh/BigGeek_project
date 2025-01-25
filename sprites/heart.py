@@ -11,7 +11,7 @@ class Heart(pygame.sprite.Sprite):
     image2 = pygame.transform.scale(image, (60, 60))
     x,y = 20,20
 
-    def __init__(self, *group):
+    def __init__(self, count, *group):
         """Creating a heart object
 
         Args:
@@ -23,4 +23,9 @@ class Heart(pygame.sprite.Sprite):
         self.rect.x = Heart.x
         self.rect.y = Heart.y
 
+        self.count = count
+
         Heart.x += 20
+        
+        if Heart.x == 20 * (self.count + 1):
+            Heart.x = 20
