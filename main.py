@@ -7,7 +7,7 @@ from sprites.cloud import Cloud
 
 if __name__ == '__main__':
     pygame.init()
-    size = width,height = 800,600
+    size = width,height = 900,700
     screen = pygame.display.set_mode(size)
 
     all_sprites = pygame.sprite.Group()
@@ -17,10 +17,12 @@ if __name__ == '__main__':
     # отрисовка шарика
     balloon = Balloon(all_sprites)
 
-    # отрисовка очков 
+    # счетчик очков 
     points = 0
-    font = pygame.font.Font(None, 26)  # выбор шрифт
-    text = font.render(f'points:  {points}', True, (0, 0, 0))
+
+    # шрифты для текстов
+    points_font = pygame.font.Font(None, 26)  # выбор шрифт
+    menu_font = pygame.font.Font(None, 35)
 
     # отрисовка сердец жизней и счётчик жизней
     heart_count = 7
@@ -39,7 +41,10 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     FPS = 200
 
-    pygame.mouse.set_visible(False)
+    # пауза
+    pause = True
+
+    
     running = True
     while running:
         screen.fill('lightblue')
@@ -47,51 +52,82 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
 
-            # отрисовка облаков
-            if event.type == CLOUDEVENT:
-                for i in range(random.randrange(2)):
-                    Cloud(cloud_sprites)
-
-            # начисление очков
-            if event.type == POINTEVENT:
-                points += 1
-
-        # усложнение игры
-        if points == 200:
-            FPS += 1
-
-        if heart_count == 0:
-            with open('data/points_record.txt', 'w', encoding='utf8') as file:
-                file.write(str(points))
-            points = 0
-            running = False
-
-        # отрисовка очков
-        text = font.render(f'points:  {points}', True, (0, 0, 0))
-
-        # управление шариком
-        balloon.update_pos()
-
-        # обработка столкновения шарика с облаками
-        if pygame.sprite.spritecollide(balloon, cloud_sprites, True):
-            heart_count -= 1
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                if heart_count == 0:
+                    running = False
+                else:
+                    pause = not pause
             
-            # отрисовка сердец жизни
-            for sprite in heart_sprites:
-                sprite.kill()
-            
-            for i in range(heart_count):
-                Heart(heart_count, heart_sprites)
+            if not pause:    
+                # отрисовка облаков
+                if event.type == CLOUDEVENT:
+                    for i in range(random.randrange(2)):
+                        Cloud(cloud_sprites)
 
-        cloud_sprites.update()
-        cloud_sprites.draw(screen)
+                # начисление очков
+                if event.type == POINTEVENT:
+                    points += 1
 
-        all_sprites.update()
-        all_sprites.draw(screen)
+        if pause:
+            pygame.draw.rect(screen, (250, 250, 250), (300, 200, 300, 300), border_radius=40)
 
-        heart_sprites.draw(screen)
+            name_text = menu_font.render('Balloon flight', True, (0, 0, 0))
+            play_text = menu_font.render('Press SPACE to play', True, (0, 0, 0))
 
-        screen.blit(text, (600, 20))
+            screen.blit(name_text, (370, 250))
+            screen.blit(play_text, (330, 320))
+
+        elif not pause or heart_count == 0:
+            # конец игры
+            if heart_count == 0:
+                pygame.mouse.set_visible(True)
+
+                with open('data/points_record.txt', 'w', encoding='utf8') as file:
+                    file.write(str(points))
+                points = 0
+                pygame.draw.rect(screen, (250, 250, 250), (300, 200, 300, 300), border_radius=40)
+
+                end_text = menu_font.render('Game over', True, (0, 0, 0))
+                exit_text = menu_font.render('Press SPACE to exit', True, (0, 0, 0))
+
+                screen.blit(end_text, (380, 250))
+                screen.blit(exit_text, (330, 320))
+
+            else:
+                pygame.mouse.set_visible(False)
+
+                # управление шариком
+                balloon.update_pos()
+
+                # обработка столкновения шарика с облаками
+                if pygame.sprite.spritecollide(balloon, cloud_sprites, True):
+                    heart_count -= 1
+                    
+                    # отрисовка сердец жизни
+                    for sprite in heart_sprites:
+                        sprite.kill()
+                    
+                    for i in range(heart_count):
+                        Heart(heart_count, heart_sprites)
+                
+                # отрисовка очков
+                points_text = points_font.render(f'points:  {points}', True, (0, 0, 0))
+                screen.blit(points_text, (700, 20))
+                
+                # усложнение игры
+                if points % 150 == 0:
+                    FPS += 5
+
+                
+                
+                cloud_sprites.update()
+                cloud_sprites.draw(screen)
+
+                all_sprites.update()
+                all_sprites.draw(screen)
+
+                heart_sprites.draw(screen)
 
         clock.tick(FPS)
 
