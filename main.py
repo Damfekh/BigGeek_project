@@ -1,3 +1,5 @@
+import csv
+
 import pygame
 import random
 from sprites.balloon import Balloon
@@ -83,16 +85,28 @@ if __name__ == '__main__':
             if heart_count == 0:
                 pygame.mouse.set_visible(True)
 
-                with open('data/points_record.txt', 'w', encoding='utf8') as file:
-                    file.write(str(points))
-                points = 0
+                with open('data/points_record.csv', 'r', encoding='utf8') as file:
+                    best_score = max([int(i) for i in file.readlines() if i != '\n'])
+
+                if best_score > points:
+                    best_score = points
+                    with open('data/points_record.csv', 'a', encoding='utf8') as file:
+                        writter = csv.writer(file)
+                        writter.writerow(str(points))
+
                 pygame.draw.rect(screen, (250, 250, 250), (300, 200, 300, 300), border_radius=40)
 
                 end_text = menu_font.render('Game over', True, (0, 0, 0))
                 exit_text = menu_font.render('Press SPACE to exit', True, (0, 0, 0))
+                points_end_text = menu_font.render(f'Your score: {points}', True, (0, 0, 0))
+                best_points_text = menu_font.render(f'Your best score: {best_score}', True, (0, 0, 0))
 
                 screen.blit(end_text, (380, 250))
                 screen.blit(exit_text, (330, 320))
+                screen.blit(points_end_text, (330, 390))
+                screen.blit(best_points_text, (330, 460))
+
+                points = 0
 
             else:
                 pygame.mouse.set_visible(False)
