@@ -22,12 +22,16 @@ if __name__ == '__main__':
     # счетчик очков 
     points = 0
 
+    # лучший счёт
+    with open('data/points_score.txt', 'r', encoding='utf8') as file:
+        best_score = max([int(i.strip('\n')) for i in file.readlines()])
+    
     # шрифты для текстов
     points_font = pygame.font.Font(None, 26)  # выбор шрифт
     menu_font = pygame.font.Font(None, 35)
 
     # отрисовка сердец жизней и счётчик жизней
-    heart_count = 7
+    heart_count = 10
     for i in range(heart_count):
         Heart(heart_count, heart_sprites)
 
@@ -43,10 +47,12 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     FPS = 200
 
+    # залипание клавиш
+    pygame.key.set_repeat()
+
     # пауза
     pause = True
 
-    
     running = True
     while running:
         screen.fill('lightblue')
@@ -61,17 +67,23 @@ if __name__ == '__main__':
                 else:
                     pause = not pause
             
-            if not pause:    
+            if not pause and heart_count != 0:    
                 # отрисовка облаков
                 if event.type == CLOUDEVENT:
-                    for i in range(random.randrange(2)):
-                        Cloud(cloud_sprites)
+                    if FPS >= 220:
+                        for i in range(random.randint(2, 4)):
+                            Cloud(cloud_sprites)
+                    else:
+                        for i in range(random.randrange(2)):
+                            Cloud(cloud_sprites)
 
                 # начисление очков
                 if event.type == POINTEVENT:
                     points += 1
 
         if pause:
+            pygame.mouse.set_visible(True)
+
             pygame.draw.rect(screen, (250, 250, 250), (300, 200, 300, 300), border_radius=40)
 
             name_text = menu_font.render('Balloon flight', True, (0, 0, 0))
@@ -85,28 +97,20 @@ if __name__ == '__main__':
             if heart_count == 0:
                 pygame.mouse.set_visible(True)
 
-                with open('data/points_record.csv', 'r', encoding='utf8') as file:
-                    best_score = max([int(i) for i in file.readlines() if i != '\n'])
-
-                if best_score > points:
-                    best_score = points
-                    with open('data/points_record.csv', 'a', encoding='utf8') as file:
-                        writter = csv.writer(file)
-                        writter.writerow(str(points))
-
                 pygame.draw.rect(screen, (250, 250, 250), (300, 200, 300, 300), border_radius=40)
 
+                if points > best_score:
+                    best_score = points
+
                 end_text = menu_font.render('Game over', True, (0, 0, 0))
+                points_end_text = menu_font.render(f'Your score:  {points}', True, (0, 0, 0))
+                best_points_text = menu_font.render(f'Your best score:  {best_score}', True, (0, 0, 0))
                 exit_text = menu_font.render('Press SPACE to exit', True, (0, 0, 0))
-                points_end_text = menu_font.render(f'Your score: {points}', True, (0, 0, 0))
-                best_points_text = menu_font.render(f'Your best score: {best_score}', True, (0, 0, 0))
 
-                screen.blit(end_text, (380, 250))
-                screen.blit(exit_text, (330, 320))
-                screen.blit(points_end_text, (330, 390))
-                screen.blit(best_points_text, (330, 460))
-
-                points = 0
+                screen.blit(end_text, (380, 230))
+                screen.blit(points_end_text, (360, 300))
+                screen.blit(best_points_text, (330, 370))
+                screen.blit(exit_text, (330, 440))
 
             else:
                 pygame.mouse.set_visible(False)
@@ -130,11 +134,9 @@ if __name__ == '__main__':
                 screen.blit(points_text, (700, 20))
                 
                 # усложнение игры
-                if points % 150 == 0:
+                if points % 500 == 0:
                     FPS += 5
 
-                
-                
                 cloud_sprites.update()
                 cloud_sprites.draw(screen)
 
@@ -147,3 +149,7 @@ if __name__ == '__main__':
 
         pygame.display.flip()
     pygame.quit()
+
+    if best_score == points:
+        with open('data/points_score.txt', 'w', encoding='utf8') as file:
+            file.write(str(points))
