@@ -18,13 +18,13 @@ class Cloud(pygame.sprite.Sprite):
         """
         super().__init__(group)
         self.group = group
-        self.w, self.h = random.randint(80, 150), random.randint(70, 80)
+        self.w, self.h = random.randint(40, 110), random.randint(30, 40)
         self.image = pygame.transform.scale(Cloud.image, (self.w, self.h))
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(900 - self.w)
         self.rect.y = -70
 
-    def update(self, more=False):
+    def update(self):
         """Changes the position of the cloud
 
             Returns:
