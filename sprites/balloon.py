@@ -44,6 +44,12 @@ class Balloon(pygame.sprite.Sprite):
             self.rect.x, self.rect.y = mouse_x - 35, mouse_y - 40
 
     def tick(self):
+        """Animate balloon sprite
+
+            Returns:
+                None
+        """
+
         self.img_index += 1
         if self.img_index == 8:
             self.img_index = 0

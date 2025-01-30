@@ -155,6 +155,7 @@ if __name__ == '__main__':
         pygame.display.flip()
     pygame.quit()
 
+    # запись нового рекорда
     if best_score == points:
         with open('data/points_score.txt', 'w', encoding='utf8') as file:
             file.write(str(points))
