@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     # время между сменой спрайтов шарика
     BALLOONEVENT = pygame.USEREVENT + 1
-    pygame.time.set_timer(CLOUDEVENT, 100)
+    pygame.time.set_timer(BALLOONEVENT, 100)
 
 
 
