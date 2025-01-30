@@ -43,6 +43,12 @@ if __name__ == '__main__':
     CLOUDEVENT = pygame.USEREVENT + 1
     pygame.time.set_timer(CLOUDEVENT, 100)
 
+    # время между сменой спрайтов шарика
+    BALLOONEVENT = pygame.USEREVENT + 1
+    pygame.time.set_timer(CLOUDEVENT, 100)
+
+
+
     # фпс
     clock = pygame.time.Clock()
     FPS = 200
@@ -52,6 +58,9 @@ if __name__ == '__main__':
 
     # пауза
     pause = True
+
+
+    animation_time = 0
 
     running = True
     while running:
@@ -80,6 +89,9 @@ if __name__ == '__main__':
                 # начисление очков
                 if event.type == POINTEVENT:
                     points += 1
+
+                if event.type == BALLOONEVENT:
+                    balloon.tick()
 
         if pause:
             pygame.mouse.set_visible(True)
