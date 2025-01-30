@@ -1,5 +1,3 @@
-import csv
-
 import pygame
 import random
 from sprites.balloon import Balloon
@@ -20,7 +18,7 @@ if __name__ == '__main__':
     balloon = Balloon(all_sprites)
 
     # счетчик очков 
-    points = 0
+    points = 400
 
     # лучший счёт
     with open('data/points_score.txt', 'r', encoding='utf8') as file:
@@ -47,8 +45,6 @@ if __name__ == '__main__':
     BALLOONEVENT = pygame.USEREVENT + 1
     pygame.time.set_timer(BALLOONEVENT, 100)
 
-
-
     # фпс
     clock = pygame.time.Clock()
     FPS = 200
@@ -59,7 +55,7 @@ if __name__ == '__main__':
     # пауза
     pause = True
 
-
+    # время периода анимаций
     animation_time = 0
 
     running = True
@@ -79,17 +75,14 @@ if __name__ == '__main__':
             if not pause and heart_count != 0:    
                 # отрисовка облаков
                 if event.type == CLOUDEVENT:
-                    if FPS >= 220:
-                        for i in range(random.randint(2, 4)):
-                            Cloud(cloud_sprites)
-                    else:
-                        for i in range(random.randrange(2)):
-                            Cloud(cloud_sprites)
+                    for i in range(random.randrange(2)):
+                        Cloud(cloud_sprites)
 
                 # начисление очков
                 if event.type == POINTEVENT:
                     points += 1
 
+                # анимация шарика
                 if event.type == BALLOONEVENT:
                     balloon.tick()
 

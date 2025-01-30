@@ -44,30 +44,10 @@ class Balloon(pygame.sprite.Sprite):
             self.rect.x, self.rect.y = mouse_x - 35, mouse_y - 40
 
     def tick(self):
-        if self.img_index == 0:
-            self.img_index = 1
-
-        elif self.img_index == 1:
-            self.img_index = 2
-
-        elif self.img_index == 2:
-            self.img_index = 3
-
-        elif self.img_index == 3:
-            self.img_index = 4
-
-        elif self.img_index == 4:
-            self.img_index = 5
-
-        elif self.img_index == 5:
-            self.img_index = 6
-
-        elif self.img_index == 6:
-            self.img_index = 7
-
-        elif self.img_index == 7:
+        self.img_index += 1
+        if self.img_index == 8:
             self.img_index = 0
-
+        
         self.image = self.ball_images[self.img_index]
         self.image = pygame.transform.scale(self.image, (70, 80))
 
