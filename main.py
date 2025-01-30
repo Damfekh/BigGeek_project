@@ -18,7 +18,7 @@ if __name__ == '__main__':
     balloon = Balloon(all_sprites)
 
     # счетчик очков 
-    points = 400
+    points = 0
 
     # лучший счёт
     with open('data/points_score.txt', 'r', encoding='utf8') as file:
@@ -102,7 +102,7 @@ if __name__ == '__main__':
             if heart_count == 0:
                 pygame.mouse.set_visible(True)
 
-                pygame.draw.rect(screen, (250, 250, 250), (300, 200, 300, 300), border_radius=40)
+                pygame.draw.rect(screen, (250, 250, 250), (250, 200, 400, 300), border_radius=40)
 
                 if points > best_score:
                     best_score = points
@@ -110,12 +110,12 @@ if __name__ == '__main__':
                 end_text = menu_font.render('Game over', True, (0, 0, 0))
                 points_end_text = menu_font.render(f'Your score:  {points}', True, (0, 0, 0))
                 best_points_text = menu_font.render(f'Your best score:  {best_score}', True, (0, 0, 0))
-                exit_text = menu_font.render('Press SPACE to exit', True, (0, 0, 0))
+                again_text = menu_font.render('Press SPACE to play again', True, (0, 0, 0))
 
                 screen.blit(end_text, (380, 230))
                 screen.blit(points_end_text, (360, 300))
                 screen.blit(best_points_text, (330, 370))
-                screen.blit(exit_text, (330, 440))
+                screen.blit(again_text, (300, 440))
 
             else:
                 pygame.mouse.set_visible(False)
